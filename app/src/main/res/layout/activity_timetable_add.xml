@@ -8,7 +8,7 @@
     android:weightSum="1">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/message_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -43,7 +43,7 @@
         android:textAlignment="center" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/submit"
         android:layout_width="286dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

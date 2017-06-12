@@ -14,9 +14,8 @@ public class Timetable {
     {
 
     }
-    public Timetable(int id,String name,float pass_percent)
+    public Timetable(String name,float pass_percent)
     {
-        this.id = id;
         this.name = name;
         this.pass_percent = pass_percent;
     }
@@ -38,7 +37,7 @@ public class Timetable {
 
     //Getters
 
-    public long getId(int id)
+    public long getId()
     {
         return this.id;
     }

@@ -2,8 +2,14 @@ package com.vivekunni.trackr;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by acemaster on 11/06/17.
@@ -38,10 +44,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //Table Create Statements
 
-    private static final String CREATE_TABLE_TT = "CREATE TABLE "+ Table_TimeTable + " ("+ KEY_TT_ID + "INTEGER PRIMARY KEY, "+ KEY_TT_NAME + "TEXT, "+KEY_TT_PASS_PERCENT + "REAL, "+ KEY_TT_TOTAL_CLASS + "INTEGER)";
+    private static final String CREATE_TABLE_TT = "CREATE TABLE "+ Table_TimeTable + " ("+ KEY_TT_ID + "INTEGER PRIMARY KEY, "+ KEY_TT_NAME + "TEXT, "+KEY_TT_PASS_PERCENT + "REAL)";
     private static final String CREATE_TABLE_SUB = "CREATE TABLE "+ Table_Subjects + " ("+ KEY_SUB_ID + "INTEGER PRIMARY KEY, "+ KEY_SUB_NAME + "TEXT, "+KEY_SUB_TT_ID + "INTEGER, "+ KEY_SUB_NO_OF_CLASSES + "INTEGER)";
 
-    public DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -85,5 +91,31 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         long s_id = db.insert(Table_Subjects,null,values);
         return s_id;
+    }
+
+    //Get All Timetables
+    public List<Timetable> getAllTimeTables() {
+        List<Timetable> timetables = new ArrayList<Timetable>();
+        String selectQuery = "SELECT  * FROM " + Table_TimeTable;
+
+        Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Timetable td = new Timetable();
+                td.setId(c.getInt((c.getColumnIndex(KEY_TT_ID))));
+                td.setName((c.getString(c.getColumnIndex(KEY_TT_NAME))));
+                td.setPass_percent(c.getFloat(c.getColumnIndex(KEY_TT_PASS_PERCENT)));
+
+                // adding to todo list
+                timetables.add(td);
+            } while (c.moveToNext());
+        }
+
+        return timetables;
     }
 }
